@@ -9,6 +9,7 @@ import {
   VIEWER,
   XP_RULES,
   createInitialData,
+  politicians,
 } from '../data/data.js'
 import { toISODate, uid } from '../utils/helpers.js'
 
@@ -53,6 +54,51 @@ export function AppProvider({ children }) {
 
   const toggleEditMode = useCallback(() => setEditMode((v) => !v), [setEditMode])
   const resetData = useCallback(() => setData(createInitialData()), [setData])
+  const selectPolitician = useCallback((politicianId) => {
+    const politician = politicians.find(({ id }) => id === politicianId)
+    if (!politician) return
+
+    setData((prev) => {
+      const activeId = prev.activePoliticianId || prev.profile.id
+      if (activeId === politicianId) return prev
+
+      const activeSnapshot = {
+        profile: prev.profile,
+        badges: prev.badges,
+        projects: prev.projects,
+        timeline: prev.timeline,
+        posts: prev.posts,
+        activity: prev.activity,
+      }
+      const targetSnapshot = prev.politicianSnapshots?.[politicianId] || {
+        profile: politician.profile,
+        badges: politician.badges,
+        projects: politician.projects,
+        timeline: politician.timeline,
+        posts: politician.posts,
+        activity: politician.activity,
+      }
+
+      return {
+        ...prev,
+        ...targetSnapshot,
+        activePoliticianId: politicianId,
+        politicianSnapshots: {
+          ...prev.politicianSnapshots,
+          [activeId]: activeSnapshot,
+        },
+      }
+    })
+  }, [setData])
+  const saveQuizResult = useCallback(
+    (result) => {
+      setData((prev) => ({
+        ...prev,
+        viewer: { ...prev.viewer, quizResult: result },
+      }))
+    },
+    [setData],
+  )
 
   // Político: protocola um novo projeto (vira "repositório" + post automático + XP + heatmap)
   const addProject = useCallback(
@@ -205,6 +251,8 @@ export function AppProvider({ children }) {
       setEditMode,
       toggleEditMode,
       resetData,
+      selectPolitician,
+      saveQuizResult,
       addProject,
       updateProjectStatus,
       addPost,
@@ -212,7 +260,7 @@ export function AppProvider({ children }) {
       toggleStar,
       toggleReaction,
     }),
-    [data, editMode, setEditMode, toggleEditMode, resetData, addProject, updateProjectStatus, addPost, addComment, toggleStar, toggleReaction],
+    [data, editMode, setEditMode, toggleEditMode, resetData, selectPolitician, saveQuizResult, addProject, updateProjectStatus, addPost, addComment, toggleStar, toggleReaction],
   )
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>

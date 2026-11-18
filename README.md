@@ -1,134 +1,108 @@
 # Vitrine Cívica
 
-> **Projeto em desenvolvimento — protótipo demonstrativo.** Ainda não é um
-> serviço oficial, não está pronto para uso institucional e não representa
-> dados reais de pessoas, partidos, mandatos ou projetos de lei.
+> **Protótipo em desenvolvimento.** A Vitrine Cívica é uma proposta de Hub
+> Nacional de Fiscalização Política e Alinhamento Cidadão. Os dados e perfis
+> atualmente exibidos são fictícios e não representam pessoas, partidos ou
+> mandatos reais.
 
-A Vitrine Cívica explora uma forma mais acessível e interativa de acompanhar a
-atividade de representantes públicos. A ideia combina a familiaridade dos
-perfis de jogos e dos repositórios de código com informações cívicas: projetos
-de lei ganham histórico e documentação em linguagem simples, enquanto cidadãos
-podem acompanhar atualizações, apoiar propostas e participar de conversas.
+## Visão geral
 
-## Objetivo da ideia
+A Vitrine Cívica explora uma interface pública para acompanhar a atividade de
+representantes e compreender propostas legislativas. A experiência combina
+rastreabilidade inspirada em repositórios do GitHub, elementos de perfil e
+gamificação associados à Steam e um questionário de alinhamento político
+multieixos inspirado em modelos como o 12axes.
 
-O objetivo é tornar mais fácil entender **o que um mandato está fazendo, como
-as propostas avançam e onde a população pode acompanhar ou participar**. Em vez
-de tratar cada projeto como um documento isolado, a interface apresenta sua
-tramitação como um histórico, com emendas, temas e explicações acessíveis.
+O objetivo do protótipo é organizar informações cívicas em perfis acessíveis:
+projetos são apresentados com histórico e explicações em linguagem simples,
+enquanto cidadãos podem acompanhar atualizações, apoiar propostas, comentar e
+comparar suas respostas a posicionamentos demonstrativos. XP, selos e métricas
+são recursos de interface, não avaliações oficiais de desempenho.
 
-O perfil, o nível de experiência e o mapa de atividade são elementos de
-gamificação para facilitar a leitura e incentivar transparência. Eles não
-medem a qualidade de um mandato e não devem ser interpretados como avaliação
-oficial de desempenho.
+## Funcionalidades implementadas
 
-## Estado atual
+### Hub Nacional por estado
 
-Esta versão é um **MVP visual em desenvolvimento**, feito para explorar a
-interface e os fluxos principais com dados fictícios. Os dados ficam somente
-no `localStorage` do navegador. Ainda não há servidor, banco de dados,
-autenticação, integração com fontes oficiais, sincronização entre dispositivos
-ou moderação de conteúdo.
+- Filtro para as 27 Unidades Federativas — 26 estados e o Distrito Federal —,
+  por cargo e por texto.
+- Catálogo de 29 perfis fictícios, com representantes distribuídos por todas as
+  UFs e cargos de governador, senador, deputado federal e deputado estadual.
+- Cartões com partido, estado, indicador demonstrativo e selos visuais de
+  transparência e prestação de contas.
 
-Não use este protótipo para publicar, verificar ou tomar decisões sobre
-informações políticas reais. Antes de qualquer uso público, será necessário
-validar fontes e dados, privacidade, segurança, acessibilidade e regras de
-participação.
+### Quiz de alinhamento político
 
-## Funcionalidades demonstrativas
+- Questionário com 12 pautas e cinco níveis de resposta, da discordância total
+  à concordância plena.
+- Vetores demonstrativos próprios para cada perfil, em escala de −2 a +2, que
+  cobrem economia, serviços públicos, federalismo, segurança, meio ambiente,
+  administração pública, transparência, participação e trabalho.
+- Ranking calculado por distância euclidiana normalizada. Para `n` eixos
+  comparáveis, `d = √Σ(respostaᵢ − posiçãoᵢ)²` e a afinidade é
+  `arredondar(100 × (1 − d / (4√n)))`, limitada ao intervalo de 0% a 100%.
+- Comparativo visual por eixo, que evidencia aproximações e diferenças sem
+  recomendar voto.
 
-- Perfil com cargo, partido, biografia, badges e XP.
-- Heatmap anual de atividades cívicas.
-- Projetos de lei com status, temas, apoios, emendas, README e histórico.
-- Trajetória com mandatos, experiência profissional e formação.
-- Feed de atualizações, reações e comentários.
+### Perfil cívico e projetos
+
+- Cabeçalho centralizado com avatar ou iniciais, cargo, partido, estado, XP,
+  nível e conquistas.
+- Heatmap anual de atividade cívica no perfil principal e resumo de atividade
+  no modal responsivo de perfil.
+- Modal centralizado e rolável, com indicadores demonstrativos de assiduidade,
+  transparência, uso de cota, custo-benefício e projetos apresentados/aprovados.
+- Abas de projetos de lei, votações recentes, trajetória e alinhamento com o
+  cidadão, quando há um resultado válido do quiz.
+- Projetos apresentados como repositórios: status, temas, apoios (“stars”),
+  emendas (“forks”), README e histórico de tramitação.
+- Trajetória organizada em mandatos, experiência profissional e formação.
+
+### Interação e persistência
+
+- Feed de atualizações com reações e comentários.
 - Modo de edição simulado para criar projetos, atualizar tramitações e publicar
   atualizações.
-- Persistência local no navegador e opção de restaurar os dados de demonstração.
+- Persistência local de interações, resultados do quiz e snapshots dos perfis
+  no `localStorage`; o controle **Resetar demo** restaura os dados iniciais.
+- A ação **Abrir perfil completo na página principal** carrega o perfil
+  selecionado para interação e simulação de edição.
 
-Os nomes, partidos, instituições, projetos, números e publicações incluídos no
-protótipo são fictícios. As interações são locais e não são enviadas a
-representantes públicos.
+## Tecnologias
+
+- React 18
+- Vite 5
+- Tailwind CSS 3
+- Lucide React (ícones)
+- Node.js e npm para desenvolvimento e execução dos testes
 
 ## Como executar
 
-Requisitos: Node.js e npm.
+Requisitos: Node.js e npm instalados.
 
 ```bash
 npm install
 npm run dev
 ```
 
-O Vite informa no terminal o endereço local do site (normalmente
-`http://localhost:5173`).
+O Vite informa no terminal o endereço local — normalmente
+`http://localhost:5173`.
 
-Para validar a compilação de produção:
+Para validar o build de produção e executar os testes:
 
 ```bash
 npm run build
-npm run preview
+npm test
 ```
 
-## Stack
+## Estado do projeto e limitações
 
-- React 18
-- Vite 5
-- Tailwind CSS 3
-- Lucide React
+Esta versão é um protótipo de interface e fluxos, não um serviço público
+operacional. Não há backend, autenticação, integração com bases oficiais,
+sincronização entre dispositivos ou verificação independente dos dados. Os
+nomes, partidos, posicionamentos, votações, métricas, selos, projetos e
+trajetórias são fictícios. O quiz é experimental, não cobre todas as dimensões
+políticas e não constitui recomendação eleitoral.
 
-## Estrutura do projeto
-
-```text
-.
-├── index.html
-├── package.json
-├── package-lock.json
-├── tailwind.config.js
-├── postcss.config.js
-├── vite.config.js
-└── src/
-    ├── App.jsx
-    ├── main.jsx
-    ├── index.css
-    ├── data/
-    │   └── data.js                 # dados fictícios e configurações
-    ├── context/
-    │   └── AppContext.jsx          # estado, ações e persistência
-    ├── hooks/
-    │   └── useLocalStorage.js
-    ├── utils/
-    │   └── helpers.js
-    └── components/
-        ├── dashboard/              # painel de edição demonstrativo
-        ├── feed/                   # publicações, reações e comentários
-        ├── heatmap/
-        ├── layout/
-        ├── profile/
-        ├── projects/
-        └── timeline/
-```
-
-## Persistência e modo de edição
-
-O botão no cabeçalho alterna entre a visão de cidadão e o modo de edição
-simulado. No modo de edição, o painel permite criar projetos e atualizações;
-também é possível alterar o status dos projetos. Essas ações atualizam a
-interface e são gravadas no `localStorage` deste navegador.
-
-As alterações não são compartilhadas com outros usuários. Use **Resetar demo**
-no cabeçalho para voltar aos dados fictícios iniciais. A chave atual dos dados
-é `vitrine-civica:v1`.
-
-## Próximos passos possíveis
-
-- Definir fontes públicas e um processo verificável de atualização de dados.
-- Projetar backend, autenticação e autorização antes de qualquer uso real.
-- Avaliar privacidade, segurança, acessibilidade e moderação.
-- Criar testes automatizados para os fluxos e regras de negócio.
-- Validar a proposta com cidadãos e especialistas em transparência pública.
-
-## Contribuições
-
-Como o projeto ainda está em desenvolvimento, sugestões e contribuições são
-bem-vindas. Descreva claramente o problema ou a proposta e tenha em mente que
-funcionalidades, estrutura e requisitos podem mudar.
+Antes de qualquer uso com informações reais, será necessário estabelecer
+fontes públicas verificáveis, critérios de atualização, proteção de dados,
+segurança, acessibilidade, moderação e governança editorial.

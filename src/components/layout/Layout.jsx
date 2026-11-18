@@ -14,7 +14,7 @@ export default function Layout({ children }) {
         </div>
       )}
 
-      <main className="mx-auto w-full max-w-6xl flex-1 space-y-6 px-4 py-6">{children}</main>
+      <main className="mx-auto w-full max-w-5xl flex-1 space-y-8 px-4 py-8 sm:px-6 lg:px-8">{children}</main>
 
       <footer className="border-t border-civic-line py-6 text-center text-xs text-civic-muted">
         Projeto de demonstração. Todos os nomes, partidos e dados são fictícios · Dados salvos no localStorage do seu navegador.

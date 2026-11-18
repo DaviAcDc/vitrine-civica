@@ -1,9 +1,9 @@
 import { cx } from '../../utils/helpers.js'
 
 // tabs: [{ id, label, icon: LucideIcon, count? }]
-export default function Tabs({ tabs, active, onChange }) {
+export default function Tabs({ tabs, active, onChange, ariaLabel = 'Seções do perfil' }) {
   return (
-    <div role="tablist" aria-label="Seções do perfil" className="flex gap-1 overflow-x-auto border-b border-civic-line">
+    <div role="tablist" aria-label={ariaLabel} className="flex gap-1 overflow-x-auto border-b border-civic-line">
       {tabs.map(({ id, label, icon: Icon, count }) => {
         const isActive = id === active
         return (
